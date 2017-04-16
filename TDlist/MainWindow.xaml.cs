@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using System.Collections;
 
 namespace TDlist
 {
@@ -24,27 +26,78 @@ namespace TDlist
         {
             InitializeComponent();
         }
-        TextBox[] textBox = new TextBox[5];
+        ArrayList textBox=new ArrayList();
+        int i = 0, tab = 1;
+        ArrayList textD = new ArrayList();
+        ArrayList date = new ArrayList();
         
-        void AddTextBox(int i, TextBox[] textBox, int h,int l){
+        void AddTextBox(int i, ArrayList textBox, int h,int l){
              
-            textBox[i] = new TextBox();
-            textBox[i].HorizontalAlignment = HorizontalAlignment.Left;
-            textBox[i].Height = 20;
-            textBox[i].Width = 346;
-            textBox[i].VerticalAlignment = VerticalAlignment.Top;
-            textBox[i].TextWrapping = TextWrapping.Wrap;
-            textBox[i].Margin = new Thickness(h, l,0,0);
-            MyGrid.Children.Add(textBox[0]);
+            textBox.Add(new TextBox());
+            ((TextBox)textBox[i]).HorizontalAlignment = HorizontalAlignment.Left;
+            ((TextBox)textBox[i]).Height = 20;
+            ((TextBox)textBox[i]).Width = 346;
+            ((TextBox)textBox[i]).VerticalAlignment = VerticalAlignment.Top;
+            ((TextBox)textBox[i]).TextWrapping = TextWrapping.Wrap;
+            ((TextBox)textBox[i]).Margin = new Thickness(h, l, 0, 0);
+            MyGrid.Children.Add(((TextBox)textBox[i]));
 
     }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        void FileWrite(string text,string date){
 
-            AddTextBox(0, textBox, 1, 1);
-               
+            FileStream file = new FileStream("C:\\Users\\админ\\Documents\\Visual Studio 2012\\Projects\\TDlist\\TDlist\\dataBase.txt", FileMode.Append, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(file);
+            writer.Write(text + "/");
+            writer.Write(date);
+
+            writer.Write('\n');
+            writer.Close(); 
+
+        }
+
+        void FillArr() { 
+            FileStream file = new FileStream("C:\\Users\\админ\\Documents\\Visual Studio 2012\\Projects\\TDlist\\TDlist\\dataBase.txt", FileMode.Open, FileAccess.Read);
+            StreamReader read = new StreamReader(file);
+            string str;
+
+            while (!read.EndOfStream) //Цикл длиться пока не будет достигнут конец файла
+            {
+                str = read.ReadLine();
+                textD.Add(str.Split('/')[0]);
+                date.Add((str.Split('/'))[1]);               
+                i++;
+            }
+            read.Close(); 
+        }
+        
+        
+        
+        
+        private void Button_Click(object sender, RoutedEventArgs e)
+         {
+             
+
+            FileWrite(textBox1.Text, DatePicker1.DisplayDate.ToString());
+            
+             AddTextBox(i, textBox, 1, tab);
+             ((TextBox)textBox[i]).Text = textBox1.Text;
+             tab += 30;
+             i++;
        }
 
+        private void MyGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            FillArr();
+           
+           for(int j=0;j<i;j++){
+                AddTextBox(j, textBox, 1, tab);
+                tab += 30;
+                ((TextBox)textBox[j]).Text = (string)textD[j];
+                }
+            }
+            
+        }
+
 
     }
-}
+
