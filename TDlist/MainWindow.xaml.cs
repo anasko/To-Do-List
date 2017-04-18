@@ -28,8 +28,14 @@ namespace TDlist
         }
         ArrayList textBox=new ArrayList();
         int i = 0, tab = 1;
-        ArrayList textD = new ArrayList();
-        ArrayList date = new ArrayList();
+        public class Rek
+        {
+            public DateTime date;
+            public string text;
+        }
+        List<Rek> usr = new List<Rek>();
+        Rek u1 = new Rek();
+
         
         void AddTextBox(int i, ArrayList textBox, int h,int l){
              
@@ -63,11 +69,17 @@ namespace TDlist
             while (!read.EndOfStream) //Цикл длиться пока не будет достигнут конец файла
             {
                 str = read.ReadLine();
-                textD.Add(str.Split('/')[0]);
-                date.Add((str.Split('/'))[1]);               
+                u1.date = new DateTime(int.Parse((str.Split('/')[1]).Split('.')[2].Split(' ')[0]), int.Parse((str.Split('/')[1]).Split('.')[1]), int.Parse((str.Split('/')[1]).Split('.')[0]));
+                u1.text = str.Split('/')[0];
+                usr.Add(u1);
+                u1 = new Rek();
                 i++;
             }
-            read.Close(); 
+
+            read.Close();
+            usr = usr.OrderBy(u1 => u1.date).ToList();
+
+
         }
         
         
@@ -77,7 +89,7 @@ namespace TDlist
          {
              
 
-            FileWrite(textBox1.Text, DatePicker1.DisplayDate.ToString());
+            FileWrite(textBox1.Text, DatePicker1.Text.ToString());
             
              AddTextBox(i, textBox, 1, tab);
              ((TextBox)textBox[i]).Text = textBox1.Text;
@@ -88,12 +100,16 @@ namespace TDlist
         private void MyGrid_Loaded(object sender, RoutedEventArgs e)
         {
             FillArr();
-           
-           for(int j=0;j<i;j++){
+            int j = 0;
+            foreach (Rek i in usr){
+          
                 AddTextBox(j, textBox, 1, tab);
                 tab += 30;
-                ((TextBox)textBox[j]).Text = (string)textD[j];
+                ((TextBox)textBox[j]).Text = i.text;
+                j++;
                 }
+            
+           
             }
             
         }
