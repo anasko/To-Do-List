@@ -73,8 +73,10 @@ namespace TDlist
                 u1.text = str.Split('/')[0];
                 usr.Add(u1);
                 u1 = new Rek();
+
                 i++;
             }
+
 
             read.Close();
             usr = usr.OrderBy(u1 => u1.date).ToList();
