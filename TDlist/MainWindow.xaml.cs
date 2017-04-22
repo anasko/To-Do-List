@@ -46,7 +46,6 @@ namespace TDlist
             ((TextBox)textBox[i]).VerticalAlignment = VerticalAlignment.Top;
             ((TextBox)textBox[i]).TextWrapping = TextWrapping.Wrap;
             ((TextBox)textBox[i]).Margin = new Thickness(h, l, 0, 0);
-
             MyGrid.Children.Add(((TextBox)textBox[i]));
 
     }
