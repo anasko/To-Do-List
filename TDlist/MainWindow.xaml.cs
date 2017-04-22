@@ -43,6 +43,7 @@ namespace TDlist
             ((TextBox)textBox[i]).HorizontalAlignment = HorizontalAlignment.Left;
             ((TextBox)textBox[i]).Height = 20;
             ((TextBox)textBox[i]).Width = 346;
+
             ((TextBox)textBox[i]).VerticalAlignment = VerticalAlignment.Top;
             ((TextBox)textBox[i]).TextWrapping = TextWrapping.Wrap;
             ((TextBox)textBox[i]).Margin = new Thickness(h, l, 0, 0);
